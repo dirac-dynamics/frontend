@@ -3,28 +3,29 @@
 
 <div style="height: 500px; width: 100%">
     <l-map
-      v-if="showMap"
       :zoom="zoom"
       :center="center"
       :options="mapOptions"
       style="height: 80%"
       @update:center="centerUpdate"
       @update:zoom="zoomUpdate"
-      ref="myMap"
     >
       <l-tile-layer
         :url="url"
         :attribution="attribution"
       />
-      <l-marker :key="index" v-for="(carrier,index) in carriers"
-                      :lat-lng="carrier.position.coordinates"
-            >
-
-<!--
+      <l-marker :key="'t' + index" v-for="(transportable,index) in transportables"
+                      :lat-lng="transportable.position.coordinates">
                 <l-icon
-                        :icon-size="[10,10]"
-                        :icon-url="icon" /> -->
-            </l-marker>
+                        :icon-size="[25,25]"
+                        :icon-url="parcel_icon" />
+        </l-marker>
+      <l-marker :key="'c' + index" v-for="(carrier,index) in carriers"
+                      :lat-lng="carrier.position.coordinates">
+                <l-icon
+                        :icon-size="[25,25]"
+                        :icon-url="truck_icon" />
+        </l-marker>
     </l-map>
   </div>
 
@@ -33,7 +34,9 @@
 <script>
 import axios from 'axios';
 import { latLng } from "leaflet";
-import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
+import { LMap, LTileLayer, LMarker, LIcon } from "vue2-leaflet";
+import truck from '../assets/truck.png';
+import parcel from '../assets/parcel.png';
 
 export default {
   name: "Map",
@@ -41,7 +44,7 @@ export default {
     LMap,
     LTileLayer,
     LMarker,
-
+    LIcon
   },
   data() {
     return {
@@ -50,15 +53,13 @@ export default {
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution:
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      withPopup: latLng(47.41322, -1.219482),
-      withTooltip: latLng(47.41422, -1.250482),
       currentZoom: 11,
       currentCenter: latLng(48.143743, 11.575942),
-      showParagraph: false,
       mapOptions: {
         zoomSnap: 0.5
       },
-      showMap: true,
+      truck_icon: truck,
+      parcel_icon: parcel,
       transportables: [],
       carriers: []
     };
