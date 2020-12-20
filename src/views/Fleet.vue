@@ -69,7 +69,7 @@
               </CDropdown>
             </CCol>
             <CCol lg="3">
-              <CButton color="danger">Optimize Routes</CButton>
+              <CButton @click="callMatching" color="danger">Optimize Routes</CButton>
             </CCol>
           </CRow>
           <CRow>
@@ -237,8 +237,13 @@ export default {
       });
       this.carriers[index].selected = true;
       this.carriers[index].iconSize = this.largeIcon;
+    },
+    callMatching: function() {
+      axios.post('http://localhost:8000/match/',{}).then(r => {
+        // r should contain routes
+      })
     }
-   },
+  },
   mounted: function () {
             // init with random data
             axios.get('http://localhost:8000/carriers').then(t => {
