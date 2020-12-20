@@ -1,6 +1,6 @@
 <template>
   <div>
-    <WidgetsDropdown/>
+    <!-- <WidgetsDropdown/> -->
     <CCard>
       <CCardBody>
         <CRow>
@@ -26,7 +26,7 @@
             </CButtonGroup>
           </CCol>
         </CRow>
-        <MainChartExample style="height:300px;margin-top:40px;"/>
+        <!-- <MainChartExample style="height:300px;margin-top:40px;"/> -->
       </CCardBody>
       <CCardFooter>
         <CRow class="text-center">
@@ -82,7 +82,7 @@
         </CRow>
       </CCardFooter>
     </CCard>
-    <WidgetsBrand/>
+    <!-- <WidgetsBrand/> -->
     <CRow>
       <CCol md="12">
         <CCard>
@@ -454,14 +454,11 @@
 </template>
 
 <script>
-import MainChartExample from './charts/MainChartExample'
-import WidgetsDropdown from './widgets/WidgetsDropdown'
-import WidgetsBrand from './widgets/WidgetsBrand'
 
 export default {
   name: 'Dashboard',
   components: {
-    MainChartExample,
+    MainChartExampl,
     WidgetsDropdown,
     WidgetsBrand
   },
