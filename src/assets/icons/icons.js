@@ -21,6 +21,7 @@ import {
   cibStripe,
   cibPaypal,
   cibGooglePay, 
+  cibOpenstreetmap,
   cibCcAmex
 } from '@coreui/icons'
 import {
@@ -51,6 +52,7 @@ import {
   cilEnvelopeClosed,
   cilEnvelopeOpen,
   cilEuro,
+  cilGift,
   cilGlobeAlt,
   cilGrid,
   cilFile,
@@ -73,6 +75,7 @@ import {
   cilSpeedometer,
   cilStar,
   cilTask,
+  cilTruck,
   cilUser,
   cilUserFemale,
   cilUserFollow,
@@ -105,6 +108,7 @@ export const iconsSet = Object.assign(
     cilEnvelopeOpen,
     cilEuro,
     cilGlobeAlt,
+    cilGift,
     cilGrid,
     cilFile,
     cilJustifyCenter,
@@ -126,6 +130,7 @@ export const iconsSet = Object.assign(
     cilSpeedometer,
     cilStar,
     cilTask,
+    cilTruck,
     cilUser,
     cilUserFemale,
     cilUserFollow,
@@ -162,6 +167,7 @@ export const iconsSet = Object.assign(
     cibStripe, 
     cibPaypal, 
     cibGooglePay,
+    cibOpenstreetmap,
     cibCcAmex
   }
 )
