@@ -1,20 +1,14 @@
 <template>
-  <div id="app">
-    <Map/>
-  </div>
+  <router-view></router-view>
 </template>
 
 <script>
-import Map from './components/Map.vue'
-
 export default {
-  name: 'App',
-  components: {
-    Map
-  }
+  name: 'App'
 }
 </script>
 
-<style>
-
+<style lang="scss">
+  // Import Main styles for this application
+  @import 'assets/scss/style';
 </style>

@@ -1,18 +1,23 @@
-import { Icon }  from 'leaflet'
+import 'core-js/stable'
 import 'leaflet/dist/leaflet.css';
-
 import Vue from 'vue'
-import App from './App.vue'
+import App from './App'
+import router from './router'
+import CoreuiVue from '@coreui/vue'
+import { iconsSet as icons } from './assets/icons/icons.js'
+import store from './store'
 
-delete Icon.Default.prototype._getIconUrl;
-
-Icon.Default.mergeOptions({
-   iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-   iconUrl: require('leaflet/dist/images/marker-icon.png'),
-   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
-});
-Vue.config.productionTip = false
+Vue.config.performance = true
+Vue.use(CoreuiVue)
+Vue.prototype.$log = console.log.bind(console)
 
 new Vue({
-  render: h => h(App),
-}).$mount('#app')
+  el: '#app',
+  router,
+  store,
+  icons,
+  template: '<App/>',
+  components: {
+    App
+  }
+})
