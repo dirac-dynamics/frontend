@@ -260,7 +260,7 @@ export default {
                     phone = phone + randomDigit[Math.floor(Math.random() * randomDigit.length)];
                   }
                   const lat = 48.143743 + 0.05 * (Math.random() * 2 - 1);
-                  const lng = 11.575942 + 0.05 * (Math.random() * 2 - 1);
+                  const lng = 11.575942 + 0.10 * (Math.random() * 2 - 1);
 
                   axios.post('http://localhost:8000/carriers/',
                     {'phone': phone,
@@ -280,7 +280,7 @@ export default {
                   const receiver = randomFirstNames[Math.floor(Math.random() * randomFirstNames.length)] + " " + randomLastNames[Math.floor(Math.random() * randomLastNames.length)];
 
                   const lat = 48.143743 + 0.05 * (Math.random() * 2 - 1);
-                  const lng = 11.575942 + 0.05 * (Math.random() * 2 - 1);
+                  const lng = 11.575942 + 0.10 * (Math.random() * 2 - 1);
 
                   axios.post('http://localhost:8000/transportables/',
                     {'sender': sender,
