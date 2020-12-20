@@ -142,7 +142,7 @@
                   {{transportable.sender}}
                   </CCol>
                   <CCol lg="5">
-                  {{transportable.reiceiver}}
+                  {{transportable.receiver}}
                   </CCol>
                 </CRow>
               </CListGroupItem>
@@ -173,12 +173,12 @@ export default {
   },
   data() {
     return {
-      zoom: 11,
+      zoom: 12,
       center: latLng(48.143743, 11.575942),
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution:
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      currentZoom: 11,
+      currentZoom: 12,
       currentCenter: latLng(48.143743, 11.575942),
       mapOptions: {
         zoomSnap: 0.5
@@ -240,22 +240,94 @@ export default {
     }
    },
   mounted: function () {
-            axios.get('http://localhost:8000/transportables').then(t => {
-                this.transportables = t.data.results
-                    .map(r => {
-                        r.iconSize = this.normalIcon;
-                        return r;
-                    });
-            }),
-            axios.get('http://localhost:8000/carriers').then(c => {
-              this.carriers = c.data.results
-                  .map(c => {
-                    c.iconSize = this.normalIcon;
-                    c.selected = false;
-                    return c;
-                  });
+            // init with random data
+            axios.get('http://localhost:8000/carriers').then(t => {
+              // asume empty means not yet initialized
+              if (t.data.results.length == 0) {
+                const randomFirstNames = ['Jannes', 'Manuel', 'Antonius', 'Niels', 'Jonas', 'Raul', 'Tom']
+                const randomLastNames = ['Stubbemann', 'Hurtado', 'Scherer', 'Focke', 'Gebendorfer', 'Gomez', 'Hubregsten']
+
+                const randomPlateCity = ['MU', 'B', 'OL', 'PB', 'H', 'DO', 'HB']
+                const randomDigit = ['1','2','3','4','5','6','7','8','9',]
+                const randomChar = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
+
+                var i;
+                for (i = 0; i < 10; i++) {
+                  const driver = randomFirstNames[Math.floor(Math.random() * randomFirstNames.length)] + " " + randomLastNames[Math.floor(Math.random() * randomLastNames.length)];
+                  const plate_number = randomPlateCity[Math.floor(Math.random() * randomPlateCity.length)] + "-" + randomChar[Math.floor(Math.random() * randomChar.length)] + randomChar[Math.floor(Math.random() * randomChar.length)] + "-" + randomDigit[Math.floor(Math.random() * randomDigit.length)] + randomDigit[Math.floor(Math.random() * randomDigit.length)] + randomDigit[Math.floor(Math.random() * randomDigit.length)];
+                  var phone = "+49"
+                  while(phone.length < 11) {
+                    phone = phone + randomDigit[Math.floor(Math.random() * randomDigit.length)];
+                  }
+                  const lat = 48.143743 + 0.05 * (Math.random() * 2 - 1);
+                  const lng = 11.575942 + 0.05 * (Math.random() * 2 - 1);
+
+                  axios.post('http://localhost:8000/carriers/',
+                    {'phone': phone,
+                     'driver': driver,
+                     'plate_number': plate_number,
+                     'position': {
+                        'type': 'Point',
+                        'coordinates': [lat, lng]
+                      }
+                     }
+                  )
+                }
+
+                var i;
+                for (i = 0; i < 10; i++) {
+                  const sender = randomFirstNames[Math.floor(Math.random() * randomFirstNames.length)] + " " + randomLastNames[Math.floor(Math.random() * randomLastNames.length)];
+                  const receiver = randomFirstNames[Math.floor(Math.random() * randomFirstNames.length)] + " " + randomLastNames[Math.floor(Math.random() * randomLastNames.length)];
+
+                  const lat = 48.143743 + 0.05 * (Math.random() * 2 - 1);
+                  const lng = 11.575942 + 0.05 * (Math.random() * 2 - 1);
+
+                  axios.post('http://localhost:8000/transportables/',
+                    {'sender': sender,
+                     'receiver': receiver,
+                     'position': {
+                        'type': 'Point',
+                        'coordinates': [lat, lng]
+                      }
+                     }
+                  )
+                }
+
+                axios.get('http://localhost:8000/transportables').then(t => {
+                    this.transportables = t.data.results
+                        .map(r => {
+                            r.iconSize = this.normalIcon;
+                            return r;
+                        });
+                }),
+                axios.get('http://localhost:8000/carriers').then(c => {
+                  this.carriers = c.data.results
+                      .map(c => {
+                        c.iconSize = this.normalIcon;
+                        c.selected = false;
+                        return c;
+                      });
+                })
+
+              } else {
+                axios.get('http://localhost:8000/transportables').then(t => {
+                    this.transportables = t.data.results
+                        .map(r => {
+                            r.iconSize = this.normalIcon;
+                            return r;
+                        });
+                }),
+                axios.get('http://localhost:8000/carriers').then(c => {
+                  this.carriers = c.data.results
+                      .map(c => {
+                        c.iconSize = this.normalIcon;
+                        c.selected = false;
+                        return c;
+                      });
+                })
+              }
             })
-        },
+        }
 };
 </script>
 
