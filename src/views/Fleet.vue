@@ -1,12 +1,19 @@
 
 <template>
 
-<div style="height: 500px; width: 100%">
+    <CCard>
+      <CCardBody>
+        <CRow>
+          <CCol sm="5">
+            <h4 id="title" class="card-title mb-0">Overview</h4>
+          </CCol>
+        </CRow>
+<div style="height: 500px; width: 100%; margin-top:20px;">
     <l-map
       :zoom="zoom"
       :center="center"
       :options="mapOptions"
-      style="height: 80%"
+      style="height: 100%"
       @update:center="centerUpdate"
       @update:zoom="zoomUpdate"
     >
@@ -28,6 +35,8 @@
         </l-marker>
     </l-map>
   </div>
+      </CCardBody>
+    </CCard>
 
 </template>
 
