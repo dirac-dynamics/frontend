@@ -8,7 +8,7 @@
             <h4 id="title" class="card-title mb-0">Overview</h4>
           </CCol>
         </CRow>
-<div style="height: 500px; width: 100%; margin-top:20px;">
+<div style="height: 45vh; width: 100%; margin-top:20px;">
     <l-map
       :zoom="zoom"
       :center="center"
