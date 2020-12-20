@@ -82,11 +82,12 @@ import {
   cilXCircle
 
 } from '@coreui/icons'
-import { logo } from './logo'
+import { r_logo } from './r_logo'
+import { rome_logo } from './rome_logo'
 
 export const iconsSet = Object.assign(
   {},
-  { logo },
+  { r_logo, rome_logo },
   {
     cilArrowRight,
     cilBan,
