@@ -44,7 +44,8 @@
         <l-polyline
           :key="'r' + index" v-for="(carrier, index) in carriers"
           :lat-lngs="carrier.route"
-          :color="carrier.routeColor"
+          :weight="carrier.weight"
+          :color="'#FF0000'"
         />
 
     </l-map>
@@ -59,26 +60,25 @@
         <CCardHeader>
           <CCol>
           <CRow>
-            <CCol lg="7">
+            <CCol lg="6">
               <CRow>
               <img src="@/assets/truck.png" width="30" height="30" style="margin-left: 10px"/>
               <h2 style="margin-left: 10px">Trucks</h2>
               </CRow>
             </CCol>
-            <CCol lg="2">
-              <CDropdown 
-                toggler-text="Matching" 
-                color="secondary"
-                placement="top-start"
-              >
-                <CDropdownItem>Greedy</CDropdownItem>
-                <CDropdownItem>Optimized</CDropdownItem>
-              </CDropdown>
-            </CCol>
             <CCol lg="3">
               <CButton @click="callMatching" color="danger" :disabled="this.calculating">
                 <CSpinner v-if="calculating" size="sm" />
                 Calculate
+              </CButton>
+            </CCol>
+            <CCol lg="2">
+              <CButton @click="toggleOptimized" color="success">{{algorithm}}</CButton>
+            </CCol>
+            <CCol lg="1">
+              <CButton @click="runSimulation">
+                <CIcon v-if="play || !calculated" name='cil-media-play'/>
+                <CIcon v-if="!play && calculated" name='cil-media-step-backward'/>
               </CButton>
             </CCol>
           </CRow>
@@ -200,7 +200,12 @@ export default {
       parcel_icon: parcel,
       transportables: [],
       carriers: [],
-      calculating: false
+      calculating: false,
+      calculation: {},
+      optimized: false,
+      play: false,
+      calculated: false,
+      algorithm: "Greedy"
     };
   },
   methods: {
@@ -235,12 +240,12 @@ export default {
    },
     mouseOverCarrier: function (index) {
       this.carriers[index].iconSize = this.largeIcon;
-      this.carriers[index].routeColor = "#00FF00";
+      this.carriers[index].weight = 8;
     },
     mouseLeaveCarrier: function (index) {
       if (!this.carriers[index].selected) {
         this.carriers[index].iconSize = this.normalIcon;
-      this.carriers[index].routeColor = "#FF0000";
+      this.carriers[index].weight = 3;
       }
     },
     mouseClickCarrier: function (index) {
@@ -252,27 +257,59 @@ export default {
       this.carriers[index].selected = true;
       this.carriers[index].iconSize = this.largeIcon;
     },
+    toggleOptimized: function() {
+      this.optimized = !this.optimized
+      if(this.optimized) {
+        this.algorithm = "Optimized"
+      } else {
+        this.algorithm = "Greedy"
+      }
+      this.play = false;
+      runSimulation();
+
+    },
     callMatching: function() {
       this.calculating = true;
       axios.post('http://localhost:8000/match/',{}).then(r => {
         // r should contain routes, assign routes as array of tuple-arrays to carriers[idx].route
-        this.carriers.forEach((c,i) =>{
-          c.route = r.data.routes_optimal[i];
-          c.posIdx = 0;
-        });
+        this.calculation = r.data;
         this.calculating = false;
-        requestAnimationFrame(this.mainLoop);
+        this.calculated = true;
       })
     },
+    runSimulation: function() {
+      if(this.play) {
+        this.play = false;
+        requestAnimationFrame(this.mainLoop);
+      } else if(this.optimized) {
+        this.carriers.forEach((c,i) =>{
+          c.route = this.calculation.routes_optimal[i];
+          c.posIdx = 0;
+          c.position.coordinates = c.route[c.posIdx]
+        });
+        this.play = true;
+      } else if(!this.optimized){
+        this.carriers.forEach((c,i) =>{
+          console.log(this.calculation)
+          c.route = this.calculation.routes_greedy[i];
+          c.posIdx = 0;
+          c.position.coordinates = c.route[c.posIdx]
+        });
+        this.play = true;
+      }
+    },
     mainLoop: function(carrierIdx) {
-      console.log('mainLoop');
+      var runAgain = false;
       this.carriers.forEach((c) =>{
         if(c.posIdx < c.route.length) {
           c.posIdx = c.posIdx + 1
           c.position.coordinates = c.route[c.posIdx]
+          runAgain = true;
         }
       })
-      requestAnimationFrame(this.mainLoop);
+      if(runAgain) {
+        requestAnimationFrame(this.mainLoop);
+      }
     }
   },
   mounted: function () {
@@ -342,7 +379,7 @@ export default {
                         c.iconSize = this.normalIcon;
                         c.selected = false;
                         c.route = [];
-                        c.routeColor = "#FF0000";
+                        c.weight = 3;
                         return c;
                       });
                 })
@@ -361,7 +398,7 @@ export default {
                         c.iconSize = this.normalIcon;
                         c.selected = false;
                         c.route = [];
-                        c.routeColor = "#FF0000";
+                        c.weight = 3;
                         return c;
                       });
                 })
