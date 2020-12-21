@@ -76,7 +76,10 @@
               </CDropdown>
             </CCol>
             <CCol lg="3">
-              <CButton @click="callMatching" color="danger">Optimize Routes</CButton>
+              <CButton @click="callMatching" color="danger" :disabled="this.calculating">
+                <CSpinner v-if="calculating" size="sm" />
+                Calculate
+              </CButton>
             </CCol>
           </CRow>
           <CRow>
@@ -197,14 +200,7 @@ export default {
       parcel_icon: parcel,
       transportables: [],
       carriers: [],
-      polyline: {
-        latlngs: [
-          [47.334852, -1.509485],
-          [47.342596, -1.328731],
-          [47.241487, -1.190568],
-          [47.234787, -1.358337]
-        ]
-      }
+      calculating: false
     };
   },
   methods: {
@@ -257,13 +253,14 @@ export default {
       this.carriers[index].iconSize = this.largeIcon;
     },
     callMatching: function() {
+      this.calculating = true;
       axios.post('http://localhost:8000/match/',{}).then(r => {
         // r should contain routes, assign routes as array of tuple-arrays to carriers[idx].route
-        console.log(r)
         this.carriers.forEach((c,i) =>{
           c.route = r.data.routes_optimal[i];
           c.posIdx = 0;
         });
+        this.calculating = false;
         requestAnimationFrame(this.mainLoop);
       })
     },
