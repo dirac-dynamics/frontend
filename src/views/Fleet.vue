@@ -40,6 +40,13 @@
                           :icon-size="carrier.iconSize"
                           :icon-url="truck_icon" />
         </l-marker>
+
+        <l-polyline
+          :key="'r' + index" v-for="(carrier, index) in carriers"
+          :lat-lngs="carrier.route"
+          :color="carrier.routeColor"
+        />
+
     </l-map>
   </div>
       </CCardBody>
@@ -69,7 +76,7 @@
               </CDropdown>
             </CCol>
             <CCol lg="3">
-              <CButton color="danger">Optimize Routes</CButton>
+              <CButton @click="callMatching" color="danger">Optimize Routes</CButton>
             </CCol>
           </CRow>
           <CRow>
@@ -158,7 +165,7 @@
 <script>
 import axios from 'axios';
 import { latLng } from "leaflet";
-import { LMap, LTileLayer, LMarker, LIcon, LPopup } from "vue2-leaflet";
+import { LMap, LTileLayer, LMarker, LIcon, LPopup, LPolyline } from "vue2-leaflet";
 import truck from '../assets/truck.png';
 import parcel from '../assets/parcel.png';
 
@@ -169,7 +176,8 @@ export default {
     LTileLayer,
     LMarker,
     LIcon,
-    LPopup
+    LPopup,
+    LPolyline
   },
   data() {
     return {
@@ -188,7 +196,15 @@ export default {
       truck_icon: truck,
       parcel_icon: parcel,
       transportables: [],
-      carriers: []
+      carriers: [],
+      polyline: {
+        latlngs: [
+          [47.334852, -1.509485],
+          [47.342596, -1.328731],
+          [47.241487, -1.190568],
+          [47.234787, -1.358337]
+        ]
+      }
     };
   },
   methods: {
@@ -223,10 +239,12 @@ export default {
    },
     mouseOverCarrier: function (index) {
       this.carriers[index].iconSize = this.largeIcon;
+      this.carriers[index].routeColor = "#00FF00";
     },
     mouseLeaveCarrier: function (index) {
       if (!this.carriers[index].selected) {
         this.carriers[index].iconSize = this.normalIcon;
+      this.carriers[index].routeColor = "#FF0000";
       }
     },
     mouseClickCarrier: function (index) {
@@ -237,8 +255,29 @@ export default {
       });
       this.carriers[index].selected = true;
       this.carriers[index].iconSize = this.largeIcon;
+    },
+    callMatching: function() {
+      axios.post('http://localhost:8000/match/',{}).then(r => {
+        // r should contain routes, assign routes as array of tuple-arrays to carriers[idx].route
+        console.log(r)
+        this.carriers.forEach((c,i) =>{
+          c.route = r.data.routes_optimal[i];
+          c.posIdx = 0;
+        });
+        requestAnimationFrame(this.mainLoop);
+      })
+    },
+    mainLoop: function(carrierIdx) {
+      console.log('mainLoop');
+      this.carriers.forEach((c) =>{
+        if(c.posIdx < c.route.length) {
+          c.posIdx = c.posIdx + 1
+          c.position.coordinates = c.route[c.posIdx]
+        }
+      })
+      requestAnimationFrame(this.mainLoop);
     }
-   },
+  },
   mounted: function () {
             // init with random data
             axios.get('http://localhost:8000/carriers').then(t => {
@@ -305,6 +344,8 @@ export default {
                       .map(c => {
                         c.iconSize = this.normalIcon;
                         c.selected = false;
+                        c.route = [];
+                        c.routeColor = "#FF0000";
                         return c;
                       });
                 })
@@ -322,6 +363,8 @@ export default {
                       .map(c => {
                         c.iconSize = this.normalIcon;
                         c.selected = false;
+                        c.route = [];
+                        c.routeColor = "#FF0000";
                         return c;
                       });
                 })
