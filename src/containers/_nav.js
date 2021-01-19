@@ -4,15 +4,15 @@ export default [
     _children: [
       {
         _name: 'CSidebarNavItem',
-        name: 'Dashboard',
-        to: '/dashboard',
-        icon: 'cil-speedometer'
-      },
-      {
-        _name: 'CSidebarNavItem',
         name: 'Fleet',
         to: '/fleet',
         icon: 'cib-openstreetmap'
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Dashboard',
+        to: '/dashboard',
+        icon: 'cil-speedometer'
       },
       {
         _name: 'CSidebarNavItem',
