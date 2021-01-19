@@ -317,8 +317,8 @@ export default {
             axios.get('http://localhost:8000/carriers').then(t => {
               // asume empty means not yet initialized
               if (t.data.results.length == 0) {
-                const randomFirstNames = ['Jannes', 'Manuel', 'Antonius', 'Niels', 'Jonas', 'Raul', 'Tom']
-                const randomLastNames = ['Stubbemann', 'Hurtado', 'Scherer', 'Focke', 'Gebendorfer', 'Gomez', 'Hubregsten']
+                const randomFirstNames = ['Jannes', 'Manuel', 'Antonius', 'Niels', 'Jonas', 'Raul', 'Tom', 'Lisanne', 'Rebecca', 'Saskia', 'Katharina']
+                const randomLastNames = ['Stubbemann', 'Hurtado', 'Scherer', 'Focke', 'Gebendorfer', 'Gomez', 'Hubregsten', 'Visser', 'Dannemann', 'Kröger', 'Hinsche']
 
                 const randomPlateCity = ['MU', 'B', 'OL', 'PB', 'H', 'DO', 'HB']
                 const randomDigit = ['1','2','3','4','5','6','7','8','9',]
