@@ -5,8 +5,8 @@ import Router from 'vue-router'
 const TheContainer = () => import('@/containers/TheContainer')
 
 // Views
-const Dashboard = () => import('@/views/Dashboard')
 const Fleet = () => import('@/views/Fleet')
+const Dashboard = () => import('@/views/Dashboard')
 const Trucks = () => import('@/views/Trucks')
 const Parcels = () => import('@/views/Parcels')
 
@@ -23,31 +23,31 @@ function configRoutes () {
   return [
     {
       path: '/',
-      redirect: '/dashboard',
+      redirect: '/fleet',
       name: '',
       component: TheContainer,
       children: [
+        {
+          path: 'fleet',
+          name: 'Fleet',
+          component: Fleet
+        },
         {
           path: 'dashboard',
           name: 'Dashboard',
           component: Dashboard
         },
-          {
-            path: 'fleet',
-            name: 'Fleet',
-            component: Fleet
-          },
-          {
-            path: 'trucks',
-            name: 'Trucks',
-            component: Trucks
-          },
-          {
-            path: 'parcels',
-            name: 'Parcels',
-            component: Parcels
-          },
-      ]
+        {
+          path: 'trucks',
+          name: 'Trucks',
+          component: Trucks
+        },
+        {
+          path: 'parcels',
+          name: 'Parcels',
+          component: Parcels
+        },
+    ]
     }
   ]
 }

@@ -44,7 +44,8 @@
         <l-polyline
           :key="'r' + index" v-for="(carrier, index) in carriers"
           :lat-lngs="carrier.route"
-          :color="carrier.routeColor"
+          :weight="carrier.weight"
+          :color="'#FF0000'"
         />
 
     </l-map>
@@ -59,25 +60,40 @@
         <CCardHeader>
           <CCol>
           <CRow>
-            <CCol lg="7">
+            <CCol lg="6">
               <CRow>
               <img src="@/assets/truck.png" width="30" height="30" style="margin-left: 10px"/>
               <h2 style="margin-left: 10px">Trucks</h2>
               </CRow>
             </CCol>
-            <CCol lg="2">
-              <CDropdown 
-                toggler-text="Matching" 
-                color="secondary"
-                placement="top-start"
-              >
-                <CDropdownItem>Greedy</CDropdownItem>
-                <CDropdownItem>Optimized</CDropdownItem>
-              </CDropdown>
+            <CCol lg="3">
+              <CButton @click="callMatching" color="danger" :disabled="this.calculating">
+                <CSpinner v-show="calculating" size="sm" />
+                Optimize
+              </CButton>
             </CCol>
             <CCol lg="3">
-              <CButton @click="callMatching" color="danger">Optimize Routes</CButton>
+              <CRow v-if="calculated">
+                Duration: {{  parseFloat(calculation.durations.reduce((acc, item) => acc + item, 0) / 3600.0).toFixed(2)}} h
+              </CRow>
+              <CRow v-if="calculated">
+                Distance: {{ parseFloat(calculation.distances.reduce((acc, item) => acc + item, 0) / 1000.0).toFixed(2) }} km
+              </CRow>
+              <CRow v-if="!calculated">
+                Duration: -
+              </CRow>
+              <CRow v-if="!calculated">
+                Kilometers: -
+              </CRow>
             </CCol>
+            <!---
+            <CCol lg="1" v-show="calculated">
+              <CButton @click="runSimulation">
+                <CIcon v-if="play || !calculated" name='cil-media-play'/>
+                <CIcon v-if="!play && calculated" name='cil-media-step-backward'/>
+              </CButton>
+            </CCol>
+            --->
           </CRow>
           <CRow>
             <CCol lg="2">
@@ -197,14 +213,12 @@ export default {
       parcel_icon: parcel,
       transportables: [],
       carriers: [],
-      polyline: {
-        latlngs: [
-          [47.334852, -1.509485],
-          [47.342596, -1.328731],
-          [47.241487, -1.190568],
-          [47.234787, -1.358337]
-        ]
-      }
+      calculating: false,
+      calculation: {},
+      optimized: false,
+      play: false,
+      calculated: false,
+      algorithm: "Greedy"
     };
   },
   methods: {
@@ -239,12 +253,12 @@ export default {
    },
     mouseOverCarrier: function (index) {
       this.carriers[index].iconSize = this.largeIcon;
-      this.carriers[index].routeColor = "#00FF00";
+      this.carriers[index].weight = 8;
     },
     mouseLeaveCarrier: function (index) {
       if (!this.carriers[index].selected) {
         this.carriers[index].iconSize = this.normalIcon;
-      this.carriers[index].routeColor = "#FF0000";
+      this.carriers[index].weight = 3;
       }
     },
     mouseClickCarrier: function (index) {
@@ -256,26 +270,56 @@ export default {
       this.carriers[index].selected = true;
       this.carriers[index].iconSize = this.largeIcon;
     },
+    toggleOptimized: function() {
+      this.optimized = !this.optimized
+      if(this.optimized) {
+        this.algorithm = "Optimized"
+      } else {
+        this.algorithm = "Greedy"
+      }
+      this.play = false;
+      runSimulation();
+
+    },
     callMatching: function() {
+      this.calculating = true;
       axios.post('http://localhost:8000/match/',{}).then(r => {
         // r should contain routes, assign routes as array of tuple-arrays to carriers[idx].route
-        console.log(r)
+        this.calculation = r.data;
+        this.calculating = false;
+        this.calculated = true;
         this.carriers.forEach((c,i) =>{
-          c.route = r.data.routes_optimal[i];
+          c.route = this.calculation.routes[i];
           c.posIdx = 0;
+          c.position.coordinates = c.route[c.posIdx]
         });
-        requestAnimationFrame(this.mainLoop);
       })
     },
+    runSimulation: function() {
+      if(this.play) {
+        this.play = false;
+        requestAnimationFrame(this.mainLoop);
+      } else {
+        this.carriers.forEach((c,i) =>{
+          c.route = this.calculation.routes[i];
+          c.posIdx = 0;
+          c.position.coordinates = c.route[c.posIdx]
+        });
+        this.play = true;
+      } 
+    },
     mainLoop: function(carrierIdx) {
-      console.log('mainLoop');
+      var runAgain = false;
       this.carriers.forEach((c) =>{
         if(c.posIdx < c.route.length) {
           c.posIdx = c.posIdx + 1
           c.position.coordinates = c.route[c.posIdx]
+          runAgain = true;
         }
       })
-      requestAnimationFrame(this.mainLoop);
+      if(runAgain) {
+        requestAnimationFrame(this.mainLoop);
+      } 
     }
   },
   mounted: function () {
@@ -283,8 +327,8 @@ export default {
             axios.get('http://localhost:8000/carriers').then(t => {
               // asume empty means not yet initialized
               if (t.data.results.length == 0) {
-                const randomFirstNames = ['Jannes', 'Manuel', 'Antonius', 'Niels', 'Jonas', 'Raul', 'Tom']
-                const randomLastNames = ['Stubbemann', 'Hurtado', 'Scherer', 'Focke', 'Gebendorfer', 'Gomez', 'Hubregsten']
+                const randomFirstNames = ['Jannes', 'Manuel', 'Antonius', 'Niels', 'Jonas', 'Raul', 'Tom', 'Lisanne', 'Rebecca', 'Saskia', 'Katharina']
+                const randomLastNames = ['Stubbemann', 'Hurtado', 'Scherer', 'Focke', 'Gebendorfer', 'Gomez', 'Hubregsten', 'Visser', 'Dannemann', 'Kröger', 'Hinsche']
 
                 const randomPlateCity = ['MU', 'B', 'OL', 'PB', 'H', 'DO', 'HB']
                 const randomDigit = ['1','2','3','4','5','6','7','8','9',]
@@ -345,7 +389,7 @@ export default {
                         c.iconSize = this.normalIcon;
                         c.selected = false;
                         c.route = [];
-                        c.routeColor = "#FF0000";
+                        c.weight = 3;
                         return c;
                       });
                 })
@@ -364,7 +408,7 @@ export default {
                         c.iconSize = this.normalIcon;
                         c.selected = false;
                         c.route = [];
-                        c.routeColor = "#FF0000";
+                        c.weight = 3;
                         return c;
                       });
                 })
