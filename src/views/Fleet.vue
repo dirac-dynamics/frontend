@@ -68,19 +68,32 @@
             </CCol>
             <CCol lg="3">
               <CButton @click="callMatching" color="danger" :disabled="this.calculating">
-                <CSpinner v-if="calculating" size="sm" />
-                Calculate
+                <CSpinner v-show="calculating" size="sm" />
+                Optimize
               </CButton>
             </CCol>
-            <CCol lg="2">
-              <CButton @click="toggleOptimized" color="success">{{algorithm}}</CButton>
+            <CCol lg="3">
+              <CRow v-if="calculated">
+                Duration: {{  parseFloat(calculation.durations.reduce((acc, item) => acc + item, 0) / 3600.0).toFixed(2)}} h
+              </CRow>
+              <CRow v-if="calculated">
+                Distance: {{ parseFloat(calculation.distances.reduce((acc, item) => acc + item, 0) / 1000.0).toFixed(2) }} km
+              </CRow>
+              <CRow v-if="!calculated">
+                Duration: -
+              </CRow>
+              <CRow v-if="!calculated">
+                Kilometers: -
+              </CRow>
             </CCol>
-            <CCol lg="1">
+            <!---
+            <CCol lg="1" v-show="calculated">
               <CButton @click="runSimulation">
                 <CIcon v-if="play || !calculated" name='cil-media-play'/>
                 <CIcon v-if="!play && calculated" name='cil-media-step-backward'/>
               </CButton>
             </CCol>
+            --->
           </CRow>
           <CRow>
             <CCol lg="2">
@@ -275,28 +288,25 @@ export default {
         this.calculation = r.data;
         this.calculating = false;
         this.calculated = true;
+        this.carriers.forEach((c,i) =>{
+          c.route = this.calculation.routes[i];
+          c.posIdx = 0;
+          c.position.coordinates = c.route[c.posIdx]
+        });
       })
     },
     runSimulation: function() {
       if(this.play) {
         this.play = false;
         requestAnimationFrame(this.mainLoop);
-      } else if(this.optimized) {
+      } else {
         this.carriers.forEach((c,i) =>{
-          c.route = this.calculation.routes_optimal[i];
+          c.route = this.calculation.routes[i];
           c.posIdx = 0;
           c.position.coordinates = c.route[c.posIdx]
         });
         this.play = true;
-      } else if(!this.optimized){
-        this.carriers.forEach((c,i) =>{
-          console.log(this.calculation)
-          c.route = this.calculation.routes_greedy[i];
-          c.posIdx = 0;
-          c.position.coordinates = c.route[c.posIdx]
-        });
-        this.play = true;
-      }
+      } 
     },
     mainLoop: function(carrierIdx) {
       var runAgain = false;
@@ -309,7 +319,7 @@ export default {
       })
       if(runAgain) {
         requestAnimationFrame(this.mainLoop);
-      }
+      } 
     }
   },
   mounted: function () {
