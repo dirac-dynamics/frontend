@@ -354,7 +354,7 @@ export default {
                 }
 
                 var i;
-                const transportable_positions = [(48.17977205349469, 11.675124253602606), (48.14795941900202, 11.628119831786826), (48.14166350755995, 11.65906539320436), (48.15999276074108, 11.540107109989), (48.13618853750969, 11.520402166764363), (48.16625648132125, 11.647085718140074), (48.15553867079467, 11.662042471944243), (48.14230829028947, 11.605450008848473), (48.1459378773055, 11.494065399447209), (48.1897695827536, 11.641544613253666)]
+                const transportable_positions = [[48.17977205349469, 11.675124253602606], [48.14795941900202, 11.628119831786826], [48.14166350755995, 11.65906539320436], [48.15999276074108, 11.540107109989], [48.13618853750969, 11.520402166764363], [48.16625648132125, 11.647085718140074], [48.15553867079467, 11.662042471944243], [48.14230829028947, 11.605450008848473], [48.1459378773055, 11.494065399447209], [48.1897695827536, 11.641544613253666]]
                 for (i = 0; i < 10; i++) {
                   const sender = randomFirstNames[Math.floor(Math.random() * randomFirstNames.length)] + " " + randomLastNames[Math.floor(Math.random() * randomLastNames.length)];
                   const receiver = randomFirstNames[Math.floor(Math.random() * randomFirstNames.length)] + " " + randomLastNames[Math.floor(Math.random() * randomLastNames.length)];
@@ -409,7 +409,6 @@ export default {
                         return c;
                       });
                   axios.post('http://localhost:8000/greedy/',{}).then(r => {
-                    // r should contain routes, assign routes as array of tuple-arrays to carriers[idx].route
                     this.calculation = r.data;
                     this.calculating = false;
                     this.calculated = true;
