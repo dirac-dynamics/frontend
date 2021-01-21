@@ -1,15 +1,13 @@
 <template>
   <div>
-    <CRow>
-    <CCol lg="12">
     <CCard>
       <CCardheader>
-          <CCol>
-            <CRow lg="12">
-              <img src="@/assets/truck.png" width="30" height="30" style="margin-left: 10px"/>
-              <h2 style="margin-left: 10px">Trucks</h2>
+          <CCol lg="12">
+            <CRow  style="margin-left: 32px; margin-top: 16px;">
+              <img src="@/assets/truck.png" width="30" height="30"/>
+              <h2 style="margin-left: 8px">Trucks</h2>
             </CRow>
-            <CRow>
+            <CRow style="margin-left: 32px; margin-bottom: -8px;">
               <CCol lg="2">
                 #
               </CCol>
@@ -23,7 +21,6 @@
           </CCol>
       </CCardheader>
         <CCardBody>
-          <CCardBody>
             <CListGroup style="height: 65vh; overflow:scroll">
                   <CListGroupItem tag="button" :key="'cl' + index" v-for="(carrier,index) in carriers">
                     <CRow>
@@ -44,11 +41,8 @@
                     </CRow>
                   </CListGroupItem>
             </CListGroup>
-          </CCardBody>
         </CCardBody>
     </CCard>
-    </CCol>
-    </CRow>
   </div>
 </template>
 

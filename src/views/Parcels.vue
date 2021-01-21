@@ -1,16 +1,13 @@
-
 <template>
   <div>
-    <CRow>
-    <CCol lg="12">
     <CCard>
       <CCardheader>
-          <CCol>
-            <CRow lg="12">
-              <img src="@/assets/parcel.png" width="30" height="30" style="margin-left: 10px"/>
-              <h2 style="margin-left: 10px">Parcels</h2>
+          <CCol lg="12">
+            <CRow  style="margin-left: 32px; margin-top: 16px;">
+              <img src="@/assets/parcel.png" width="30" height="30"/>
+              <h2 style="margin-left: 8px">Parcels</h2>
             </CRow>
-            <CRow>
+            <CRow style="margin-left: 32px; margin-bottom: -8px;">
               <CCol lg="2">
                 #
               </CCol>
@@ -41,8 +38,6 @@
           </CListGroup>
         </CCardBody>
     </CCard>
-    </CCol>
-    </CRow>
   </div>
 </template>
 
