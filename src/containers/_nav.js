@@ -10,9 +10,9 @@ export default [
       },
       {
         _name: 'CSidebarNavItem',
-        name: 'Dashboard',
-        to: '/dashboard',
-        icon: 'cil-speedometer'
+        name: 'Parcels',
+        to: '/parcels',
+        icon: 'cil-gift'
       },
       {
         _name: 'CSidebarNavItem',
@@ -22,10 +22,10 @@ export default [
       },
       {
         _name: 'CSidebarNavItem',
-        name: 'Parcels',
-        to: '/parcels',
-        icon: 'cil-gift'
-      }
+        name: 'Dashboard',
+        to: '/dashboard',
+        icon: 'cil-speedometer'
+      },
     ]
   }
 ]

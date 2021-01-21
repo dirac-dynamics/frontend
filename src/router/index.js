@@ -6,9 +6,9 @@ const TheContainer = () => import('@/containers/TheContainer')
 
 // Views
 const Fleet = () => import('@/views/Fleet')
-const Dashboard = () => import('@/views/Dashboard')
-const Trucks = () => import('@/views/Trucks')
 const Parcels = () => import('@/views/Parcels')
+const Trucks = () => import('@/views/Trucks')
+const Dashboard = () => import('@/views/Dashboard')
 
 Vue.use(Router)
 
@@ -33,9 +33,9 @@ function configRoutes () {
           component: Fleet
         },
         {
-          path: 'dashboard',
-          name: 'Dashboard',
-          component: Dashboard
+          path: 'parcels',
+          name: 'Parcels',
+          component: Parcels
         },
         {
           path: 'trucks',
@@ -43,9 +43,9 @@ function configRoutes () {
           component: Trucks
         },
         {
-          path: 'parcels',
-          name: 'Parcels',
-          component: Parcels
+          path: 'dashboard',
+          name: 'Dashboard',
+          component: Dashboard
         },
     ]
     }

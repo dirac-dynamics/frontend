@@ -58,7 +58,7 @@
             />
           </CCol>
           <CCol md sm="12" class="mb-sm-2 mb-0 d-md-down-none">
-            <strong>294 Average Kilometers Driven</strong>
+            <strong>294 Average Miles pre Truck</strong>
             <CProgress
               class="progress-xs mt-2"
               :precision="1"
@@ -81,14 +81,14 @@
                 <CRow>
                   <CCol sm="6">
                     <CCallout color="info">
-                      <small class="text-muted">Orders per Day</small><br>
-                      <strong class="h4">9,123</strong>
+                      <small class="text-muted">Orders Today</small><br>
+                      <strong class="h4">22,643</strong>
                     </CCallout>
                   </CCol>
                   <CCol sm="6">
                     <CCallout color="danger">
-                      <small class="text-muted">Recurring Clients</small><br>
-                      <strong class="h4">22,643</strong>
+                      <small class="text-muted">Deliveries Today</small><br>
+                      <strong class="h4">9,123</strong>
                     </CCallout>
                   </CCol>
                 </CRow>
@@ -103,7 +103,7 @@
                     <CProgress
                       class="progress-xs"
                       color="info"
-                      :value="34"
+                      :value="78"
                     />
                     <CProgress
                       class="progress-xs"
@@ -121,7 +121,7 @@
                   <div class="progress-group-bars">
                     <CProgress
                       class="progress-xs"
-                      :value="56"
+                      :value="94"
                       color="info"
                     />
                     <CProgress
@@ -140,7 +140,7 @@
                   <div class="progress-group-bars">
                     <CProgress
                       class="progress-xs"
-                      :value="12"
+                      :value="67"
                       color="info"
                     />
                     <CProgress
@@ -178,7 +178,7 @@
                   <div class="progress-group-bars">
                     <CProgress
                       class="progress-xs"
-                      :value="22"
+                      :value="73"
                       color="info"
                     />
                     <CProgress
@@ -197,7 +197,7 @@
                   <div class="progress-group-bars">
                     <CProgress
                       class="progress-xs"
-                      :value="53"
+                      :value="82"
                       color="info"
                     />
                     <CProgress
@@ -216,7 +216,7 @@
                   <div class="progress-group-bars">
                     <CProgress
                       class="progress-xs"
-                      :value="9"
+                      :value="69"
                       color="info"
                     />
                     <CProgress
@@ -226,28 +226,19 @@
                     />
                   </div>
                 </div>
-                <div class="legend text-center">
-                  <small>
-                    <sup><CBadge shape="pill" color="info">&nbsp;</CBadge></sup>
-                    New clients
-                    &nbsp;&nbsp;
-                    <sup><CBadge shape="pill" color="danger">&nbsp;</CBadge></sup>
-                    Recurring clients
-                  </small>
-                </div>
               </CCol>
               <CCol sm="12" lg="6">
                 <CRow>
                   <CCol sm="6">
                     <CCallout color="warning">
-                      <small class="text-muted">Pageviews</small><br>
+                      <small class="text-muted">Miles Driven Today</small><br>
                       <strong class="h4">78,623</strong>
                     </CCallout>
                   </CCol>
                   <CCol sm="6">
                     <CCallout color="success">
-                      <small class="text-muted">Organic</small><br>
-                      <strong class="h4">49,123</strong>
+                      <small class="text-muted">Empty Miles Driven Today</small><br>
+                      <strong class="h4">7,862</strong>
                     </CCallout>
                   </CCol>
                 </CRow>
@@ -255,8 +246,7 @@
                 <ul class="horizontal-bars type-2">
                   <div class="progress-group">
                     <div class="progress-group-header">
-                      <CIcon name="cil-user" class="progress-group-icon"/>
-                      <span class="title">Male</span>
+                      <span class="title">Upstream</span>
                       <span class="ml-auto font-weight-bold">43%</span>
                     </div>
                     <div class="progress-group-bars">
@@ -269,24 +259,22 @@
                   </div>
                   <div class="progress-group mb-5">
                     <div class="progress-group-header">
-                      <CIcon name="cil-user-female" class="progress-group-icon"/>
-                      <span class="title">Female</span>
-                      <span class="ml-auto font-weight-bold">37%</span>
+                      <span class="title">Downstream</span>
+                      <span class="ml-auto font-weight-bold">57%</span>
                     </div>
                     <div class="progress-group-bars">
                       <CProgress
                         class="progress-xs"
-                        :value="37"
+                        :value="57"
                         color="warning"
                       />
                     </div>
                   </div>
                   <div class="progress-group">
                     <div class="progress-group-header">
-                      <CIcon name="cil-globe-alt" class="progress-group-icon"/>
-                      <span class="title">Organic Search</span>
+                      <span class="title">Germany</span>
                       <span class="ml-auto font-weight-bold">
-                        191,235 <span class="text-muted small">(56%)</span>
+                        4,402 <span class="text-muted small">(56%)</span>
                       </span>
                     </div>
                     <div class="progress-group-bars">
@@ -299,14 +287,9 @@
                   </div>
                   <div class="progress-group">
                     <div class="progress-group-header">
-                      <CIcon
-                        name="cib-facebook"
-                        height="17"
-                        class="progress-group-icon"
-                      />
-                      <span class="title">Facebook</span>
+                      <span class="title">Austria</span>
                       <span class="ml-auto font-weight-bold">
-                        51,223 <span class="text-muted small">(15%)</span>
+                        1,179 <span class="text-muted small">(15%)</span>
                       </span>
                     </div>
                     <div class="progress-group-bars">
@@ -319,14 +302,9 @@
                   </div>
                   <div class="progress-group">
                     <div class="progress-group-header">
-                      <CIcon
-                        name="cib-twitter"
-                        height="17"
-                        class="progress-group-icon"
-                      />
-                      <span class="title">Twitter</span>
+                      <span class="title">Switzerland</span>
                       <span class="ml-auto font-weight-bold">
-                        37,564 <span class="text-muted small">(11%)</span>
+                        864 <span class="text-muted small">(11%)</span>
                       </span>
                     </div>
                     <div class="progress-group-bars">
@@ -339,14 +317,9 @@
                   </div>
                   <div class="progress-group">
                     <div class="progress-group-header">
-                      <CIcon
-                        name="cib-linkedin"
-                        height="17"
-                        class="progress-group-icon"
-                      />
-                      <span class="title">LinkedIn</span>
+                      <span class="title">Netherlands</span>
                       <span class="ml-auto font-weight-bold">
-                        27,319 <span class="text-muted small">&nbsp;(8%)</span>
+                        628 <span class="text-muted small">&nbsp;(8%)</span>
                       </span>
                     </div>
                     <div class="progress-group-bars">
@@ -383,26 +356,10 @@
                   ></span>
                 </div>
               </td>
-              <td slot="user" slot-scope="{item}">
+              <td slot="driver" slot-scope="{item}">
                 <div>{{item.user.name}}</div>
-                <div class="small text-muted">
-                  <span>
-                    <template v-if="item.user.new">New</template>
-                    <template v-else>Recurring</template>
-                  </span> | Registered: {{item.user.registered}}
-                </div>
               </td>
-              <td
-                slot="country"
-                slot-scope="{item}"
-                class="text-center"
-              >
-                <CIcon
-                  :name="item.country.flag"
-                  height="25"
-                />
-              </td>
-              <td slot="usage" slot-scope="{item}">
+              <td slot="empty miles driven" slot-scope="{item}">
                 <div class="clearfix">
                   <div class="float-left">
                     <strong>{{item.usage.value}}%</strong>
@@ -417,18 +374,8 @@
                   :color="color(item.usage.value)"
                 />
               </td>
-              <td
-                slot="payment"
-                slot-scope="{item}"
-                class="text-center"
-              >
-                <CIcon
-                  :name="item.payment.icon"
-                  height="25"
-                />
-              </td>
               <td slot="activity" slot-scope="{item}">
-                <div class="small text-muted">Last login</div>
+                <div class="small text-muted">Last Update</div>
                 <strong>{{item.activity}}</strong>
               </td>
             </CDataTable>
@@ -453,57 +400,48 @@ export default {
           avatar: { url: 'img/avatars/1.jpg', status: 'success' },
           user: { name: 'Yiorgos Avraamu', new: true, registered: 'Jan 1, 2015' },
           country: { name: 'USA', flag: 'cif-us' },
-          usage: { value: 50, period: 'Jun 11, 2015 - Jul 10, 2015' },
-          payment: { name: 'Mastercard', icon: 'cib-cc-mastercard' },
+          usage: { value: 5, period: 'Jun 11, 2020 - Jan 21, 2021' },
           activity: '10 sec ago'
         },
         {
           avatar: { url: 'img/avatars/2.jpg', status: 'danger' },
           user: { name: 'Avram Tarasios', new: false, registered: 'Jan 1, 2015' },
           country: { name: 'Brazil', flag: 'cif-br' },
-          usage: { value: 22, period: 'Jun 11, 2015 - Jul 10, 2015' },
-          payment: { name: 'Visa', icon: 'cib-cc-visa' },
+          usage: { value: 2, period: 'Jun 11, 2020 - Jan 21, 2021' },
           activity: '5 minutes ago'
         },
         {
           avatar: { url: 'img/avatars/3.jpg', status: 'warning' },
           user: { name: 'Quintin Ed', new: true, registered: 'Jan 1, 2015' },
           country: { name: 'India', flag: 'cif-in' },
-          usage: { value: 74, period: 'Jun 11, 2015 - Jul 10, 2015' },
-          payment: { name: 'Stripe', icon: 'cib-stripe' },
-          activity: '1 hour ago'
+          usage: { value: 4, period: 'Jun 11, 2020 - Jan 21, 2021' },
+          activity: '7 minutes ago'
         },
         {
           avatar: { url: 'img/avatars/4.jpg', status: '' },
           user: { name: 'Enéas Kwadwo', new: true, registered: 'Jan 1, 2015' },
           country: { name: 'France', flag: 'cif-fr' },
-          usage: { value: 98, period: 'Jun 11, 2015 - Jul 10, 2015' },
-          payment: { name: 'PayPal', icon: 'cib-paypal' },
-          activity: 'Last month'
+          usage: { value: 8, period: 'Jun 11, 2020 - Jan 21, 2021' },
+          activity: '8 minutes ago'
         },
         {
           avatar: { url: 'img/avatars/5.jpg', status: 'success' },
           user: { name: 'Agapetus Tadeáš', new: true, registered: 'Jan 1, 2015' },
           country: { name: 'Spain', flag: 'cif-es' },
-          usage: { value: 22, period: 'Jun 11, 2015 - Jul 10, 2015' },
-          payment: { name: 'Google Wallet', icon: 'cib-google-pay' },
-          activity: 'Last week'
+          usage: { value: 2, period: 'Jun 11, 2020 - Jan 21, 2021' },
+          activity: '8 minutes ago'
         },
         {
           avatar: { url: 'img/avatars/6.jpg', status: 'danger' },
           user: { name: 'Friderik Dávid', new: true, registered: 'Jan 1, 2015' },
           country: { name: 'Poland', flag: 'cif-pl' },
-          usage: { value: 43, period: 'Jun 11, 2015 - Jul 10, 2015' },
-          payment: { name: 'Amex', icon: 'cib-cc-amex' },
-          activity: 'Last week'
+          usage: { value: 3, period: 'Jun 11, 2020 - Jan 21, 2021' },
+          activity: '10 minutes ago'
         }
       ],
       tableFields: [
-        { key: 'avatar', label: '', _classes: 'text-center' },
-        { key: 'user' },
-        { key: 'country', _classes: 'text-center' },
-        { key: 'usage' },
-        { key: 'payment', label: 'Payment method', _classes: 'text-center' },
+        { key: 'driver' },
+        { key: 'empty miles driven' },
         { key: 'activity' },
       ]
     }
