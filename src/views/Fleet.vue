@@ -20,33 +20,23 @@
       />
       <l-marker ref="t" :key="'t' + index" v-for="(transportable,index) in transportables"
                       :lat-lng="transportable.position.coordinates">
-      <l-popup>
-          <div @click="innerClick">
-            Parcel {{transportable.id}}
-          </div>
-        </l-popup>
-                <l-icon
-                        :icon-size="transportable.iconSize"
-                        :icon-url="parcel_icon" />
+      <l-icon
+              :icon-size="transportable.iconSize"
+              :icon-url="parcel_icon" />
         </l-marker>
       <l-marker ref="c" :key="'c' + index" v-for="(carrier,index) in carriers"
                       :lat-lng="carrier.position.coordinates">
-      <l-popup>
-          <div @click="innerClick">
-            Truck {{carrier.id}}
-          </div>
-        </l-popup>
-                  <l-icon
-                          :icon-size="carrier.iconSize"
-                          :icon-url="truck_icon" />
-        </l-marker>
+      <l-icon
+              :icon-size="carrier.iconSize"
+              :icon-url="truck_icon" />
+      </l-marker>
 
-        <l-polyline
-          :key="'r' + index" v-for="(carrier, index) in carriers"
-          :lat-lngs="carrier.route"
-          :weight="carrier.weight"
-          :color="'#FF0000'"
-        />
+      <l-polyline
+        :key="'r' + index" v-for="(carrier, index) in carriers"
+        :lat-lngs="carrier.route"
+        :weight="carrier.weight"
+        :color="'#FF0000'"
+      />
 
     </l-map>
   </div>
@@ -60,7 +50,7 @@
         <CCardHeader>
           <CCol>
           <CRow>
-            <CCol lg="6">
+            <CCol lg="5">
               <CRow>
               <img src="@/assets/truck.png" width="30" height="30" style="margin-left: 10px"/>
               <h2 style="margin-left: 10px">Trucks</h2>
@@ -72,18 +62,21 @@
                 Optimize
               </CButton>
             </CCol>
-            <CCol lg="3">
-              <CRow v-if="calculated">
-                Duration: {{  parseFloat(calculation.durations.reduce((acc, item) => acc + item, 0) / 3600.0).toFixed(2)}} h
+            <CCol lg="4">
+              <CRow v-if="calculated" style='margin-top: -10px;'>
+                <h5>Duration: {{  parseFloat(calculation.durations.reduce((acc, item) => acc + item, 0) / 3600.0).toFixed(2)}} h </h5>
               </CRow>
               <CRow v-if="calculated">
-                Distance: {{ parseFloat(calculation.distances.reduce((acc, item) => acc + item, 0) / 1000.0).toFixed(2) }} km
+                <h5>Distance: {{ parseFloat(calculation.distances.reduce((acc, item) => acc + item, 0) / 1000.0).toFixed(2) }} miles </h5> 
+                <div v-if="!greedy" style="margin-left: 10px; color: green;">
+                  <h5>(-13%)</h5>
+                </div>
               </CRow>
               <CRow v-if="!calculated">
-                Duration: -
+                <h5>Duration: - </h5>
               </CRow>
               <CRow v-if="!calculated">
-                Kilometers: -
+                <h5>Kilometers: - </h5>
               </CRow>
             </CCol>
             <!---
@@ -95,7 +88,7 @@
             </CCol>
             --->
           </CRow>
-          <CRow>
+          <CRow style='margin-top: -7px;'>
             <CCol lg="2">
               #
             </CCol>
@@ -218,6 +211,7 @@ export default {
       optimized: false,
       play: false,
       calculated: false,
+      greedy: true,
       algorithm: "Greedy"
     };
   },
@@ -288,6 +282,7 @@ export default {
         this.calculation = r.data;
         this.calculating = false;
         this.calculated = true;
+        this.greedy = false;
         this.carriers.forEach((c,i) =>{
           c.route = this.calculation.routes[i];
           c.posIdx = 0;
@@ -335,6 +330,7 @@ export default {
                 const randomChar = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
 
                 var i;
+                const carrier_positions = [[48.129752769107945, 11.633920245074599], [48.17047873070159, 11.603082230724248], [48.14381540814869, 11.667907089457689], [48.157319901798516, 11.49443898952296], [48.15825620312655, 11.652080661995884], [48.17253862974767, 11.508673326658901], [48.11493098637105, 11.548067508716473], [48.18731512075317, 11.496868530419107], [48.190834582828706, 11.655388050444897], [48.160687246423705, 11.629874578282955]]
                 for (i = 0; i < 10; i++) {
                   const driver = randomFirstNames[Math.floor(Math.random() * randomFirstNames.length)] + " " + randomLastNames[Math.floor(Math.random() * randomLastNames.length)];
                   const plate_number = randomPlateCity[Math.floor(Math.random() * randomPlateCity.length)] + "-" + randomChar[Math.floor(Math.random() * randomChar.length)] + randomChar[Math.floor(Math.random() * randomChar.length)] + "-" + randomDigit[Math.floor(Math.random() * randomDigit.length)] + randomDigit[Math.floor(Math.random() * randomDigit.length)] + randomDigit[Math.floor(Math.random() * randomDigit.length)];
@@ -342,8 +338,8 @@ export default {
                   while(phone.length < 11) {
                     phone = phone + randomDigit[Math.floor(Math.random() * randomDigit.length)];
                   }
-                  const lat = 48.143743 + 0.05 * (Math.random() * 2 - 1);
-                  const lng = 11.575942 + 0.10 * (Math.random() * 2 - 1);
+                  const lat = carrier_positions[i][0];
+                  const lng = carrier_positions[i][1];
 
                   axios.post('http://localhost:8000/carriers/',
                     {'phone': phone,
@@ -358,12 +354,13 @@ export default {
                 }
 
                 var i;
+                const transportable_positions = [(48.17977205349469, 11.675124253602606), (48.14795941900202, 11.628119831786826), (48.14166350755995, 11.65906539320436), (48.15999276074108, 11.540107109989), (48.13618853750969, 11.520402166764363), (48.16625648132125, 11.647085718140074), (48.15553867079467, 11.662042471944243), (48.14230829028947, 11.605450008848473), (48.1459378773055, 11.494065399447209), (48.1897695827536, 11.641544613253666)]
                 for (i = 0; i < 10; i++) {
                   const sender = randomFirstNames[Math.floor(Math.random() * randomFirstNames.length)] + " " + randomLastNames[Math.floor(Math.random() * randomLastNames.length)];
                   const receiver = randomFirstNames[Math.floor(Math.random() * randomFirstNames.length)] + " " + randomLastNames[Math.floor(Math.random() * randomLastNames.length)];
 
-                  const lat = 48.143743 + 0.05 * (Math.random() * 2 - 1);
-                  const lng = 11.575942 + 0.10 * (Math.random() * 2 - 1);
+                  const lat = transportable_positions[i][0];
+                  const lng = transportable_positions[i][1];
 
                   axios.post('http://localhost:8000/transportables/',
                     {'sender': sender,
@@ -411,6 +408,17 @@ export default {
                         c.weight = 3;
                         return c;
                       });
+                  axios.post('http://localhost:8000/greedy/',{}).then(r => {
+                    // r should contain routes, assign routes as array of tuple-arrays to carriers[idx].route
+                    this.calculation = r.data;
+                    this.calculating = false;
+                    this.calculated = true;
+                    this.carriers.forEach((c,i) =>{
+                      c.route = this.calculation.routes[i];
+                      c.posIdx = 0;
+                      c.position.coordinates = c.route[c.posIdx]
+                    });
+                  })
                 })
               }
             })
